@@ -1,0 +1,955 @@
+{% load i18n %}
+{% load socialaccount %}
+{% load account socialaccount %}
+{% load crispy_forms_tags %}
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT"
+        crossorigin="anonymous">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+        integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+        crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/highcharts-more.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css"
+      href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script type='text/javascript'>
+</script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+      integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+{% if user.is_authenticated %}
+
+    <!-- Nave -->
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-secondary">
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+
+                <li class="nav-item">
+                    <button type="button" class="btn  btn-lg btn-success" data-toggle="modal" onclick="myFunction()"
+                            data-target="#myModal"><img src="https://img.icons8.com/small/32/000000/reservation-2.png">
+                        Criar
+                    </button>
+                </li>
+            </ul>
+            {% block content %}
+                <form method="post" action="{% url 'account_logout' %}">
+                    {% csrf_token %}
+                    {% if redirect_field_value %}
+                        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                    {% endif %}
+                    <button type="submit" class="btn btn-info btn-lg btn-danger" href="{% trans 'Sign Out' %}"><img
+                            src="https://img.icons8.com/small/32/000000/exit.png">Sair
+                    </button>
+                </form>
+            {% endblock %}
+        </div>
+    </nav>
+    <!-- Fim Nave -->
+
+    <!-- painel -->
+
+    <div>
+        <div class="col-md-3">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <i class="fa fa-list-ol fa-5x"></i>
+                        </div>
+                        <div class="col-xs-6 text-right">
+                            <p class="announcement-heading"><b>{{ cout }}</b></p>
+                            <p class="announcement-text">Quant. De Gastos</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="panel panel-warning">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <i class="fa fa-line-chart fa-5x"></i>
+                        </div>
+                        <div class="col-xs-6 text-right">
+                            <p class="announcement-heading"><b>{{ total }}</b></p>
+                            <p class="announcement-text"><b>Total Gasto</b></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <i class="fa fa-cc-visa fa-5x"></i>
+                        </div>
+                        <div class="col-xs-6 text-right">
+                            <p class="announcement-heading">{{ total_cartao }}</p>
+                            <p class="announcement-text"><b>Cartão</b> <i class=""></i></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-3">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <i class="fa fa-money fa-5x"></i>
+                        </div>
+                        <div class="col-xs-6 text-right">
+                            <p class="announcement-heading">{{ total_dinheiro }}</p>
+                            <p class="announcement-text"><b>Dinheiro</b><i class=""></i></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fim painel -->
+
+    <div style="background: white; padding: 15px 20px 20px 20px;">
+        <form method="get" action="{% url 'fitro-date' %}" style="background: white;">
+
+            <div class="">
+                <div class="col-sm-1">
+
+                </div>
+
+                <div class="col-sm-1">
+                </div>
+
+                <div class="text-center col-sm-5">
+                    <p id="demo"></p>
+
+                </div>
+
+                <div class="col-sm-2">
+                    <p><label>ESCOLHA MÊS:</label> <select class='form-control js-field' name="date" id="dete"
+                                                           style="width: 100%">
+                        <option value="13">Todos</option>
+
+                        <option value="1">Janeiro</option>
+                        <option value="2">Fevereiro</option>
+                        <option value="3">Março</option>
+                        <option value="4">Abril</option>
+                        <option value="5">Maio</option>
+                        <option value="6">Junho</option>
+                        <option value="7">Julho</option>
+                        <option value="8">Agosto</option>
+                        <option value="9">Setembro</option>
+                        <option value="10">Outubro</option>
+                        <option value="11">Novembro</option>
+                        <option value="12">Dezembro</option>
+                    </select></p>
+                </div>
+
+                <div class="btn-group" style="margin: 24px 0px 0px">
+                    <button class="btn btn-success filter-submit"><i class="fa fa-search"></i> Filtrar</button>
+                    {#                    <button class='btn btn-default js-clear filter-cancel' type="button" id="id_limpar"><i#}
+                    {#                            class="fa fa-trash"></i> Limpar#}
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Tabela -->
+    <table id="table_id" border="1">
+        <thead>
+        <tr>
+            <th class="text-center  ">Descrição</th>
+            <th class="text-center ">Valor</th>
+            <th class="text-center ">DATA</th>
+            <th class="text-center ">Categoria</th>
+            <th class="text-center ">Pagamento</th>
+            <th class="text-center ">Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for board in despesas %}
+            <tr>
+                <td>
+                    {{ board.descricao }}<br>
+                </td>
+                <td class="text-center ">{{ board.valor }}</td>
+                <td class="text-center ">{{ board.created_date }}</td>
+                <td class="text-center ">
+                    {% if  board.categoria == 1 %}
+                        <span style="background-color:#ff1510" class="text-center label label-sm label-success ">Alimentação</span>
+                    {% elif board.categoria == 2 %}
+                        <span style="background-color:#ff27b5"
+                              class="text-center label label-sm label-info  ">Cuidados pessoais</span>
+                    {% elif board.categoria == 3 %}
+                        <span style="background-color:#ffdf0e"
+                              class="text-center label label-sm label-info  ">Transporte</span>
+                    {% elif board.categoria == 4 %}
+                        <span style="background-color:#1e27ff"
+                              class="text-center label label-sm label-info  ">Água/Luz/Telefone</span>
+
+                    {% elif board.categoria == 5 %}
+                        <span style="background-color:#060606"
+                              class="text-center label label-sm label-info  ">Outros</span>
+                    {% elif board.categoria == 6 %}
+                        <span style="background-color:#52994b"
+                              class="text-center label label-sm label-info  ">Passeios/Viagens</span>
+                    {% elif board.categoria == 7 %}
+                        <span style="background-color:#5fffff"
+                              class="text-center label label-sm label-info  ">Cinema/Teatro</span>
+                    {% elif board.categoria == 8 %}
+                        <span style="background-color:#ff490f"
+                              class="text-center label label-sm label-info  ">Farmácia</span>
+                    {% elif board.categoria == 9 %}
+                        <span style="background-color:rgba(164,49,255,0.84)"
+                              class="text-center label label-sm label-info  ">Vestuário</span>
+                    {% else %}
+                        <span style="background-color:#9a0fff"
+                              class="text-center label label-sm label-info  ">Animais </span>
+                    {% endif %}
+
+                </td>
+                <td class="text-center ">
+                    {% if  board.tipo == False %}
+                        <span class="text-center label label-sm label-success "><img
+                                src="https://img.icons8.com/color/32/000000/coins.png"> Dinheiro</span>
+                    {% else %}
+                        <span style="background-color:#9a0fff"
+                              class="text-center label label-sm label-info  "><img
+                                src="https://img.icons8.com/color/32/000000/bank-cards.png"> Cartão</span>
+                    {% endif %}
+                </td>
+                <td class="text-center ">
+                    <div class="btn btn-large btn-group" style=" height: 35px">
+                        <button class="btn btn-large  btn-primary dropdown-toggle " data-toggle="dropdown">Ação
+                            <span></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            {#                            <li><a href="#">Ação</a></li>#}
+                            <li><a class="btn  btn-lg btn editer" data-target="#editerModal" id="editer"
+                                   data-url="{% url 'editer-despesas' board.id %}">
+                                <img src="https://img.icons8.com/windows/25/000000/edit.png"> Editer</a></li>
+                            <li class="divider"></li>
+                            <li><a class="btn  btn-lg btn mais" data-target="#maisrModal" id="mais"
+                                   data-url="{% url 'mais-despesas' board.id %}">
+                                <img src="https://img.icons8.com/windows/25/000000/plus.png"> Mais </a></li>
+                            <li class="divider"></li>
+                            <li><a class="btn  btn-lg delete" data-toggle="modal" value="{{ board.descricao }}"
+                                   id="delete8"
+                                   onclick="document.getElementById('formDelete').action = '{% url 'delete-despesas' board.id %}'"
+                                   data-target="#myModalDelete">
+                                <img src="https://img.icons8.com/windows/25/000000/delete.png"> Excluir</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <!-- Fim Tabela -->
+
+    <!-- Modal Deleter -->
+    <div class="modal fade" id="myModalDelete" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <h2 class="text-center"> Excluir </h2>
+                    <h3 class="text-center" id="deletar"></h3>
+                    <br>
+                    <form id="formDelete" action="" method="GET" class="Get-form">
+                        <button type="submit" class=" btn btn-block mybtn btn-primary">Sim</button>
+                        <button data-dismiss="modal" type="submit" class=" btn btn-block mybtn btn-primary">Cancelar
+                        </button>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fim modal -->
+
+
+
+    <!-- Modal mais -->
+    <div class="modal fade" id="maisModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header"><h2>mais despesas</h2>
+
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" id="maisrModalcomtente">
+
+                    <br>
+                    <div class="container">
+                        <div class="panel panel-default">
+                            <div class="alert alert-primary" role="alert">
+                                Escolha os mês ou mês para acrecentar a despesas a mais mês
+                            </div>
+                            <div class="panel-body">
+
+                                <div id="pickList"></div>
+
+                                <br>
+                                <br>
+                                <button value="" class="btn btn-primary" id="getSelected">Confirmar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fim modal -->
+
+    <!-- Modal Editer -->
+    <div class="modal fade" id="editerModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header"><h2>Editar despesas</h2>
+
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" id="editerModalcomtente">
+
+
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fim modal -->
+    <!-- Modal Creater -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content" id="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <h2>Nova despesas</h2>
+                    <form action="{% url 'creater-despesas' %}" method="POST" class="post-form">{% csrf_token %}
+                        {{ form|crispy }}
+                        <button type="submit" class=" btn btn-block mybtn btn-primary">Salvar</button>
+                        <button data-dismiss="modal" type="submit" class=" btn btn-block mybtn btn-primary">Cancelar
+                        </button>
+                    </form>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fim modal -->
+
+{% else %}
+
+
+
+
+
+
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 mx-auto">
+                <div id="first">
+                    <div class="myform form ">
+                        <div class="logo mb-3">
+                            <div class="col-md-12 text-center">
+                                <h1>Login</h1>
+                            </div>
+                        </div>
+
+                        <p class="text-center">
+                        <p><a class=" btn btn-block mybtn btn-primary" href="{% url 'account_login' %}">Log In</a></p>
+                        <p><a class=" btn btn-block mybtn btn-primary" href="{% url 'account_signup' %}">Sign Up</a></p>
+                        <a href="{% provider_login_url 'google' %}"
+                           class="google btn btn-block mybtn btn-primary tx-tfm"><i class="fa fa-google-plus"></i>
+                            Signup using Google</a>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+{% endif %}
+
+<script>
+
+
+    $(document).ready(function () {
+
+
+        document.getElementById("id_tipo").style = "  position: relative;\n" +
+            "  background: white;\n" +
+            "  width: 140px;\n" +
+            "  height: 40px;\n" +
+            "  -webkit-appearance: initial;\n" +
+            "  border-radius: 3px;\n" +
+            "  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);\n" +
+            "  outline: none;\n" +
+            "  font-size: 14px;\n" +
+            "  font-family: Trebuchet, Arial, sans-serif;\n" +
+            "  font-weight: bold;\n" +
+            "  cursor: pointer;\n" +
+            "  border: 1px solid #ddd;"
+        $('.editer').click(function () {
+            var btn = $(this);
+            $.ajax({
+                url: btn.attr("data-url"),
+                type: 'GET',
+                data: '',
+
+                success: function (data) {
+                    $("#editerModal").modal("show");
+
+                    document.getElementById("editerModalcomtente").innerHTML = data.html_form;
+                    document.getElementById("id_tipo").style = "  position: relative;\n" +
+                        "  background: white;\n" +
+                        "  width: 140px;\n" +
+                        "  height: 40px;\n" +
+                        "  -webkit-appearance: initial;\n" +
+                        "  border-radius: 3px;\n" +
+                        "  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);\n" +
+                        "  outline: none;\n" +
+                        "  font-size: 14px;\n" +
+                        "  font-family: Trebuchet, Arial, sans-serif;\n" +
+                        "  font-weight: bold;\n" +
+                        "  cursor: pointer;\n" +
+                        "  border: 1px solid #ddd;"
+
+
+                },
+
+
+            });
+        });
+
+
+        $('.delete').click(function () {
+            var btn = $(this);
+            document.getElementById("deletar").innerHTML = btn.attr("value")
+
+        });
+
+
+    });
+
+</script>
+
+
+<script>
+
+    $(document).ready(function () {
+        $('.dropdown-toggle').dropdown()
+
+        $('.mais').click(function () {
+            var btn = $(this);
+            var url = btn.attr("data-url")
+            document.getElementById("deletar").innerHTML = btn.attr("value")
+            $('#pickData').remove();
+            $('#pickListResult').remove();
+            $('#pAdd').remove();
+            $('#pAddAll').remove();
+            $('#pRemove').remove();
+            $('#pRemoveAll').remove();
+
+            $("#maisModal").modal("show");
+
+            (function ($) {
+
+                $.fn.pickList = function (options) {
+
+                    var opts = $.extend({}, $.fn.pickList.defaults, options);
+
+                    this.fill = function () {
+                        var option = '';
+
+                        $.each(opts.data, function (key, val) {
+                            option += '<option id=' + val.id + '>' + val.text + '</option>';
+                        });
+                        this.find('#pickData').append(option);
+                    };
+                    this.controll = function () {
+                        var pickThis = this;
+
+                        $("#pAdd").on('click', function () {
+                            var p = pickThis.find("#pickData option:selected");
+                            p.clone().appendTo("#pickListResult");
+                            p.remove();
+                        });
+
+                        $("#pAddAll").on('click', function () {
+                            var p = pickThis.find("#pickData option");
+                            p.clone().appendTo("#pickListResult");
+                            p.remove();
+                        });
+
+                        $("#pRemove").on('click', function () {
+                            var p = pickThis.find("#pickListResult option:selected");
+                            p.clone().appendTo("#pickData");
+                            p.remove();
+                        });
+
+                        $("#pRemoveAll").on('click', function () {
+                            var p = pickThis.find("#pickListResult option");
+                            p.clone().appendTo("#pickData");
+                            p.remove();
+                        });
+                    };
+                    this.getValues = function () {
+                        var objResult = [];
+                        this.find("#pickListResult option").each(function () {
+                            objResult.push({
+                                id: this.id,
+                            });
+                        });
+                        return objResult;
+                    };
+                    this.init = function () {
+                        var pickListHtml =
+                            "<div class='row'>" +
+                            "  <div class='col-sm-4'>" +
+                            "	 <select class='form-control pickListSelect' id='pickData' multiple></select>" +
+                            " </div>" +
+                            " <div class='col-sm-3 pickListButtons'>" +
+                            "	<button id='pAdd' class='btn btn-primary btn-sm'>" + opts.add + "</button>" +
+                            "      <button id='pAddAll' class='btn btn-primary btn-sm'>" + opts.addAll + "</button>" +
+                            "	<button id='pRemove' class='btn btn-primary btn-sm'>" + opts.remove + "</button>" +
+                            "	<button id='pRemoveAll' class='btn btn-primary btn-sm'>" + opts.removeAll + "</button>" +
+                            " </div>" +
+                            " <div class='col-sm-4'>" +
+                            "    <select class='form-control pickListSelect' id='pickListResult' multiple></select>" +
+                            " </div>" +
+                            "</div>";
+
+                        this.append(pickListHtml);
+
+                        this.fill();
+                        this.controll();
+                    };
+
+                    this.init();
+                    return this;
+                };
+
+                $.fn.pickList.defaults = {
+                    add: 'ADD Mês',
+                    addAll: 'ADD Todos Mês',
+                    remove: 'Remove Mês',
+                    removeAll: 'Remove Todos Mês'
+                };
+
+
+            }(jQuery));
+
+
+            var val = {
+
+                01: {
+                    id: 1,
+                    text: 'Janeiro'
+                },
+                02: {
+                    id: 2,
+                    text: 'Fevereiro'
+                },
+                03: {
+                    id: 3,
+                    text: 'Março'
+                },
+                04: {
+                    id: 4,
+                    text: 'Abril'
+                },
+                05: {
+                    id: 5,
+                    text: 'Maio'
+                },
+                06: {
+                    id: 6,
+                    text: 'Junho'
+                },
+                07: {
+                    id: 7,
+                    text: 'Julho'
+                },
+                8: {
+                    id: 8,
+                    text: 'Agosto'
+                },
+                9: {
+                    id: 9,
+                    text: 'Setembro'
+                },
+                10: {
+                    id: 10,
+                    text: 'Outubro'
+                },
+                11: {
+                    id: 11,
+                    text: 'Novembro'
+                },
+                12: {
+                    id: 12,
+                    text: 'Dezembro'
+                },
+            };
+
+            var pick = $("#pickList").pickList({
+                data: val
+            });
+
+
+            $("#getSelected").click(function () {
+                lista = []
+                $.each(pick.getValues(), function (index, value) {
+                    lista.push(value.id)
+                });
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    data: JSON.stringify(lista),
+                    success: function (data) {
+
+                    }
+                });
+                lista = []
+
+                $.each(pick.getValues(), function (index, value) {
+                    lista.push(value.id)
+                });
+                location.reload();
+
+            });
+
+        });
+
+
+    });
+
+</script>
+
+
+<script>
+    const mes = {{ mes }}
+        $(document).ready(function () {
+
+            var month = new Array();
+            month[0] = "Janeiro";
+            month[1] = "Fevereiro";
+            month[2] = "Março";
+            month[3] = "Abril";
+            month[4] = "Maio";
+            month[5] = "Junho";
+            month[6] = "Julho";
+            month[7] = "Agosto";
+            month[8] = "Setembro";
+            month[9] = "Outubro";
+            month[10] = "Novembro";
+            month[11] = "Dezembro";
+            month[12] = "Todos";
+
+            {#var d = new Date();#}
+            var n = month[mes - 1];
+            document.getElementById("demo").innerHTML = n;
+            $('#table_id').DataTable();
+            $(".toggle-group ").css('height:10px');
+
+            {#$('#pre-selected-options').multiSelect();#}
+
+
+        });
+</script>
+<link href="https://fonts.googleapis.com/css?family=Sniglet" rel="stylesheet">
+
+
+<style>
+    .pickListButtons {
+        padding: 10px;
+        text-align: center;
+    }
+
+    .pickListButtons button {
+        margin-bottom: 5px;
+    }
+
+    .pickListSelect {
+        height: 200px !important;
+    }
+
+    .bootstrap-switch-label:after {
+        position: absolute;
+        top: 5%;
+        display: block;
+        line-height: 32px;
+        width: 50%;
+        height: 90%;
+        background: #fff;
+        box-sizing: border-box;
+        text-align: center;
+        transition: all 0.3s ease-in 0s;
+        color: black;
+        border: #888 1px solid;
+        border-radius: 3px;
+    }
+
+    .bootstrap-switch-label:after {
+        left: 2%;
+        content: "AVISTA";
+        background-color: #1c9407;
+        color: #fffcf9;
+
+    }
+
+    .bootstrap-switch-label:checked:after {
+        left: 53%;
+        content: "CARTÃO";
+        color: #fffcf9;
+
+        background-color: #5E5694;
+    }
+
+    div.form-check {
+        text-align: center;
+    }
+
+    #demo {
+        font-family: 'Sniglet', cursive;
+        font-weight: bold;
+        color: #2519ff;
+        font-size: 40px;
+    }
+
+    /***** Top menu *****/
+
+
+    /* navbar */
+    .navbar-default {
+        background-color: #F8F8F8;
+        border-color: #E7E7E7;
+    }
+
+    /* Title */
+    .navbar-default .navbar-brand {
+        color: #777;
+    }
+
+    .navbar-default .navbar-brand:hover,
+    .navbar-default .navbar-brand:focus {
+        color: #5E5E5E;
+    }
+
+    /* Link */
+    .navbar-default .navbar-nav > li > a {
+        color: #777;
+    }
+
+    .navbar-default .navbar-nav > li > a:hover,
+    .navbar-default .navbar-nav > li > a:focus {
+        color: #333;
+    }
+
+    .navbar-default .navbar-nav > .active > a,
+    .navbar-default .navbar-nav > .active > a:hover,
+    .navbar-default .navbar-nav > .active > a:focus {
+        color: #555;
+        background-color: #E7E7E7;
+    }
+
+    .navbar-default .navbar-nav > .open > a,
+    .navbar-default .navbar-nav > .open > a:hover,
+    .navbar-default .navbar-nav > .open > a:focus {
+        color: #555;
+        background-color: #D5D5D5;
+    }
+
+    /* Caret */
+    .navbar-default .navbar-nav > .dropdown > a .caret {
+        border-top-color: #777;
+        border-bottom-color: #777;
+    }
+
+    .navbar-default .navbar-nav > .dropdown > a:hover .caret,
+    .navbar-default .navbar-nav > .dropdown > a:focus .caret {
+        border-top-color: #333;
+        border-bottom-color: #333;
+    }
+
+    .navbar-default .navbar-nav > .open > a .caret,
+    .navbar-default .navbar-nav > .open > a:hover .caret,
+    .navbar-default .navbar-nav > .open > a:focus .caret {
+        border-top-color: #555;
+        border-bottom-color: #555;
+    }
+
+    /* Mobile version */
+    .navbar-default .navbar-toggle {
+        border-color: #DDD;
+    }
+
+    .navbar-default .navbar-toggle:hover,
+    .navbar-default .navbar-toggle:focus {
+        background-color: #DDD;
+    }
+
+    .navbar-default .navbar-toggle .icon-bar {
+        background-color: #CCC;
+    }
+
+    @media (max-width: 767px) {
+        .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+            color: #777;
+        }
+
+        .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover,
+        .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+            color: #333;
+        }
+    }
+
+    {#html {#}
+    {#    height: 100%; /* Define o tamanho do Documento HTML */#}
+    {#}#}
+    {##}
+    {#body {#}
+        {#box-sizing: border-box;#}
+        {#font-family: "Verdana";#}
+    {#    height: 100%;#}
+        {#margin: 0 auto; /* Centraliza */#}
+        {#padding: 8px;#}
+        {#width: 100%; /* Define a largura do Corpo do Documento */#}
+    {#}#}
+
+    a {
+        text-decoration: none !important;
+    }
+
+    h1, h2, h3 {
+        font-family: 'Kaushan Script', cursive;
+    }
+
+    .myform {
+        position: relative;
+        display: -ms-flexbox;
+        display: flex;
+        padding: 1rem;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        width: 100%;
+        pointer-events: auto;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid rgba(0, 0, 0, .2);
+        border-radius: 1.1rem;
+        outline: 0;
+        max-width: 500px;
+    }
+
+    .tx-tfm {
+        text-transform: uppercase;
+    }
+
+    .mybtn {
+        border-radius: 50px;
+    }
+
+    .login-or {
+        position: relative;
+        color: #aaa;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .span-or {
+        display: block;
+        position: absolute;
+        left: 50%;
+        top: -2px;
+        margin-left: -25px;
+        background-color: #fff;
+        width: 50px;
+        text-align: center;
+    }
+
+    .hr-or {
+        height: 1px;
+        margin-top: 0px !important;
+        margin-bottom: 0px !important;
+    }
+
+    form .error {
+        color: #ff0000;
+    }
+
+    #second {
+        display: none;
+    }
+
+
+</style>
+
+
+
