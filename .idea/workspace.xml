@@ -33,16 +33,23 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/mysite/requirements.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="72">
-              <caret line="4" selection-start-line="4" selection-end-line="4" />
-            </state>
-          </provider>
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/mysite/mysite/settings.py">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>pip install Django~=2.0.6</find>
+      <find>DEFAULT</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="ROOT_SYNC" value="SYNC" />
@@ -52,6 +59,7 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/mysite/requirements.txt" />
+        <option value="$PROJECT_DIR$/mysite/mysite/settings.py" />
       </list>
     </option>
   </component>
@@ -74,28 +82,6 @@
             <path>
               <item name="despesa-2019" type="b2602c69:ProjectViewProjectNode" />
               <item name="despesa-2019" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="despesa-2019" type="b2602c69:ProjectViewProjectNode" />
-              <item name="despesa-2019" type="462c0819:PsiDirectoryNode" />
-              <item name="mysite" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="despesa-2019" type="b2602c69:ProjectViewProjectNode" />
-              <item name="despesa-2019" type="462c0819:PsiDirectoryNode" />
-              <item name="mysite" type="462c0819:PsiDirectoryNode" />
-              <item name="users" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="despesa-2019" type="b2602c69:ProjectViewProjectNode" />
-              <item name="despesa-2019" type="462c0819:PsiDirectoryNode" />
-              <item name="myvenv" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="despesa-2019" type="b2602c69:ProjectViewProjectNode" />
-              <item name="despesa-2019" type="462c0819:PsiDirectoryNode" />
-              <item name="myvenv" type="462c0819:PsiDirectoryNode" />
-              <item name="bin" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -136,12 +122,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1553378488815</updated>
-      <workItem from="1553378491979" duration="2520000" />
+      <workItem from="1553378491979" duration="6056000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2520000" />
+    <option name="totallyTimeSpent" value="6056000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="57" y="29" width="1839" height="988" extended-state="0" />
@@ -193,11 +179,10 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/mysite/requirements.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mysite/mysite/settings.py">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
   <component name="masterDetails">
